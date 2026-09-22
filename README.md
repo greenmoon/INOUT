@@ -11,8 +11,8 @@ configured MQTT broker over certificate-verified WSS. GitHub does not relay MQTT
 ## Use
 
 1. Open the HTTPS website using an Internet-connected PC or phone.
-2. Press **連接** to subscribe to `inout`.
-3. Select a device ID and view the cumulative IN / OUT values. RD shows diagnostics.
+2. IO opens by default and automatically subscribes to `inout` (default device `INOUT-50A138`).
+3. View the two lights and vertically stacked IN / OUT values on one screen. RD contains device selection, connection controls, settings, diagnostics and version details.
 4. On iPhone, open in Safari, then Share → Add to Home Screen → INOUT.
 
 The default endpoint is `wss://jbnas03.synology.me:8084/mqtt`.
@@ -36,7 +36,7 @@ Never commit broker, router, device-management, or GitHub credentials.
 
 ## Version and assets
 
-Web V02, page title: **INOUT MQTT Dashboard V02 · 2026.09.22 11:10**.
+Web V03, page title: **INOUT MQTT Dashboard V03 · 2026.09.22 13:33**.
 `index.html` opens the versioned page. Keep relative paths and all bundled assets
 together for GitHub Pages project-path hosting under `/INOUT/`.
 
