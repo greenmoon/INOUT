@@ -11,7 +11,7 @@ configured MQTT broker over certificate-verified WSS. GitHub does not relay MQTT
 ## Use
 
 1. Open the HTTPS website using an Internet-connected PC or phone.
-2. IO opens by default and automatically subscribes to `inout` (default device `INOUT-50A138`).
+2. IO opens by default and automatically subscribes to `inout` (default device `INOUT-50A138`). For the new board use https://greenmoon.github.io/INOUT/?id=INOUT-5CA708 .
 3. View the two lights and vertically stacked IN / OUT values on one screen. RD contains device selection, connection controls, settings, diagnostics and version details.
 4. On iPhone, open in Safari, then Share → Add to Home Screen → INOUT.
 
@@ -36,9 +36,19 @@ Never commit broker, router, device-management, or GitHub credentials.
 
 ## Version and assets
 
-Web V05, page title: **INOUT MQTT Dashboard V05 · 2026.09.22 15:54**.
+Web V06, page title: **INOUT MQTT Dashboard V06 · 2026.09.22 17:19**.
 `index.html` opens the versioned page. Keep relative paths and all bundled assets
 together for GitHub Pages project-path hosting under `/INOUT/`.
+
+Device links accept one exact uppercase `id=INOUT-XXXXXX` query parameter.
+The explicit ID overrides remembered selection; the root redirect preserves it.
+No data for that device means dashes, never another device's counts. Invalid or
+duplicate IDs stop automatic connection and show an error instead of falling back.
+The common URL without an ID retains remembered selection/default behavior.
+The new-board link selects a dedicated manifest whose start URL preserves that ID;
+actual iPhone Home Screen installation/relaunch still requires device verification.
+RD may manually select another device for the current page; reopening the dedicated
+link selects its named device again. Device IDs are not passwords or authentication.
 
 RD uses a client-side convenience code: the IN decimal string followed by the
 reversed OUT decimal string. For example, IN 342 / OUT 364 gives `342463`, and
