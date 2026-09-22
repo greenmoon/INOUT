@@ -36,9 +36,19 @@ Never commit broker, router, device-management, or GitHub credentials.
 
 ## Version and assets
 
-Web V03, page title: **INOUT MQTT Dashboard V03 · 2026.09.22 13:33**.
+Web V05, page title: **INOUT MQTT Dashboard V05 · 2026.09.22 15:54**.
 `index.html` opens the versioned page. Keep relative paths and all bundled assets
 together for GitHub Pages project-path hosting under `/INOUT/`.
+
+RD uses a client-side convenience code: the IN decimal string followed by the
+reversed OUT decimal string. For example, IN 342 / OUT 364 gives `342463`, and
+0 / 0 gives `00`. Leading zeros after reversal are preserved. Opening RD freezes
+the displayed pair for that attempt; returning to IO requires entry again.
+This is only an accidental-entry guard, not authentication or an OTP. Public
+counts and older pages remain accessible; no device or broker permission changes.
+Without a previously accepted value, `—` is not treated as zero and RD entry is
+unavailable. Previously accepted stale values are labeled and can be used for
+diagnosis. The code is not stored or sent to MQTT.
 
 MQTT.js 5.10.4 is bundled locally under its MIT license; see
 `vendor/MQTT-LICENSE.md` and `vendor/provenance.json`.

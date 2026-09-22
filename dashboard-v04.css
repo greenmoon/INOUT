@@ -1,0 +1,11 @@
+/* V04 additive entry dialog; V03 field layout remains unchanged. */
+#rdDialog{width:min(370px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--panel);color:var(--text);box-shadow:0 16px 48px #0008}
+#rdDialog::backdrop{background:#020813b8}
+#rdDialog h2{font-size:22px}
+#rdDialog .note{margin:8px 0 18px}
+.rd-entry-input{display:flex;align-items:center;gap:8px}
+.rd-entry-input input{min-width:0;flex:1;font-size:16px}
+.rd-entry-input button{flex:none;padding:8px 12px;margin-top:5px}
+#rdEntryError{min-height:22px;font-size:14px;color:#ffabab;margin:8px 0}
+.rd-entry-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:16px}
+#rdEntrySubmit{background:var(--green);border-color:var(--green);color:#08241b;font-weight:700}
