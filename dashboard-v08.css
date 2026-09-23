@@ -1,0 +1,8 @@
+/* V08: ACC/RST left, IO/RD right; keep one-screen IO at narrow widths. */
+header{flex-wrap:wrap}header .brand{order:3;width:100%}
+main[data-mode=io] header{justify-content:space-between}
+#countModeLabel{margin:0 0 10px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+#countModeLabel[data-invalid=true]{color:var(--amber)}
+main[data-mode=io] #countModeLabel{margin:0;flex:none}
+#rstButton[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:#30200b}
+@media(max-width:480px){header nav{gap:5px}header nav button{padding:8px 10px}}
