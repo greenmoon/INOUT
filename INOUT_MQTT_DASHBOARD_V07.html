@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1423">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="INOUT">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src wss:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>INOUT MQTT Dashboard V07 · 2026.09.23 11:13</title>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link id="webManifest" rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="dashboard-v03.css">
+<link rel="stylesheet" href="dashboard-v04.css">
+<script defer src="vendor/mqtt-5.10.4.min.js"></script>
+<script defer src="core.js"></script>
+<script defer src="dashboard-v07.js"></script>
+</head>
+<body>
+<main id="app" data-mode="io">
+ <header>
+  <div class="brand rd-only"><img src="apple-touch-icon.png" width="40" height="40" alt=""><div><h1>INOUT</h1><span class="eyebrow">MQTT · 唯讀監看</span></div></div>
+  <nav aria-label="顯示模式"><button id="ioButton" aria-pressed="true" type="button">IO</button><button id="rdButton" aria-pressed="false" type="button">RD</button></nav>
+ </header>
+ <p id="linkError" role="alert" hidden>裝置連結無效。請重新掃描正確 QR；不會顯示其他裝置資料。</p>
+ <section class="connection rd-only" aria-label="連線">
+  <div class="status-row"><span id="brokerState" role="status">尚未連線</span><div class="actions"><button id="connect" type="button">連接</button><button id="disconnect" type="button" disabled>斷開</button></div></div>
+  <p id="route">jbnas03.synology.me:8084 · inout</p>
+  <p id="notice" role="status">正在自動訂閱 Broker；本頁不發布任何訊息。</p>
+ </section>
+ <div class="device-row rd-only"><label for="device">裝置</label><select id="device"><option value="INOUT-50A138">INOUT-50A138</option></select><span id="freshness">等待資料</span></div>
+ <div class="lights"><span><i id="rxLight" aria-hidden="true"></i>有效接收</span><span><i id="activityLight" aria-hidden="true"></i>偵測到活動 <small id="activityText">未知</small></span></div>
+ <section id="io" aria-label="IN OUT 計數" class="counts stale">
+  <article class="count in"><h2>IN <span>進入</span></h2><div id="inValue" class="number">—</div></article>
+  <article class="count out"><h2>OUT <span>離開</span></h2><div id="outValue" class="number">—</div></article>
+ </section>
+ <section id="rd" hidden aria-label="接收診斷">
+  <h2 id="diagnosticTitle">接收診斷 · RD</h2>
+  <p id="diagHint" class="note" hidden>連線診斷不需通行碼。可選裝置、查看狀態並使用目前設定重新連接；修改 Broker／Topic／帳密須進完整 RD。裝置離線時不會自動改看其他設備。</p>
+  <button id="fullRdButton" type="button" hidden>輸入通行碼進完整 RD</button>
+  <dl class="stats"><div><dt>收到訊息</dt><dd id="total">0</dd></div><div><dt>有效更新</dt><dd id="valid">0</dd></div><div><dt>拒收</dt><dd id="rejected">0</dd></div><div><dt>Retained／重複</dt><dd id="ignored">0 / 0</dd></div></dl>
+  <p id="frame">F — · S — · E —</p><p id="clientId">Client ID：尚未建立</p>
+  <p id="transport" class="note">等待保活診斷</p>
+  <h3>選定裝置 · 最新有效 payload</h3><pre id="payload">尚未收到有效資料</pre>
+  <h3>連線紀錄（最多 12 筆）</h3><pre id="events">尚無紀錄</pre>
+  <p class="note">接收次數不是人數。i/o 直接顯示 Radar 累積值，不自行 ++。Retained 不當作即時資料；重複快照不延長有效時間。收件時間不是 Radar 生成時間。</p>
+  <p class="note">若 PINGREQ／PINGRESP 增加、收件仍為 0，請核對 S3 /config：WSS port 8084、Router／SNTP／MQTT、topic inout、提交／PUBACK，以及本機有效 Radar 資料。1883 不是本專案的 WSS port。</p>
+ </section>
+ <details id="settings" class="rd-only"><summary>Broker 設定</summary>
+  <form id="configForm">
+   <label for="url">WSS URL</label><input id="url" type="url" value="wss://jbnas03.synology.me:8084/mqtt" required spellcheck="false" autocomplete="off">
+   <div class="fields"><div><label for="topic">訂閱 Topic</label><input id="topic" value="inout" maxlength="127" required autocomplete="off"></div><div><label for="stale">未更新逾時（秒）</label><input id="stale" type="number" value="5" min="2" max="180" required></div></div>
+   <div class="fields"><div><label for="username">MQTT 使用者（匿名留白）</label><input id="username" maxlength="128" autocomplete="off"></div><div><label for="password">MQTT 密碼（匿名留白）</label><input id="password" type="password" maxlength="256" autocomplete="off"></div></div>
+   <label class="check"><input id="remember" type="checkbox">記住 URL／Topic／裝置／逾時；不保存帳密或資料</label>
+   <button id="applyConnect" type="submit">套用並連接</button>
+   <p class="note">MQTT 3.1.1 · QoS 1 · WSS 驗證由瀏覽器執行。請勿填 S3 /config 或 OTA 管理密碼。設定修改後需重新連接；逾時值請大於發布間隔。</p>
+  </form>
+ </details>
+ <details id="install" class="rd-only"><summary>iPhone 加入主畫面</summary><div class="install-help"><img src="apple-touch-icon.png" width="64" height="64" alt="INOUT 主畫面圖示"><p>Safari 開啟本頁網址 → 分享 → 加入主畫面 → 名稱 INOUT → 加入。若有「作為網頁 App 開啟」，可保持開啟。</p></div><p class="note">iPhone 請使用託管網址，不用檔案預覽。網頁不提供背景持續監控；回到前景會重新訂閱並等待新資料。PC／手機需能上網，S3 AP 不提供網路分享。</p></details>
+ <footer class="rd-only"><span id="lastSeen">最後收件 —</span><br>INOUT_MQTT_DASHBOARD_V07.html · Web V07 · 2026.09.23 11:13<br>Gateway／Radar FW：MQTT payload 未提供<br>RD 動態通行碼僅防誤入，不是安全登入；不保護 S3 設定或 MQTT 資料。</footer>
+ <noscript>請啟用 JavaScript 才能連接 MQTT。</noscript>
+</main>
+<dialog id="rdDialog" aria-labelledby="rdDialogTitle" aria-describedby="rdDialogHint">
+ <form id="rdEntryForm" autocomplete="off">
+  <h2 id="rdDialogTitle">進入 RD 模式</h2>
+  <p id="rdDialogHint" class="note">完整 RD 請輸入通行碼；首次無資料可先開啟免碼連線診斷</p>
+  <p id="rdSnapshot" class="note"></p>
+  <label for="rdEntryInput">通行碼</label>
+  <div class="rd-entry-input"><input id="rdEntryInput" type="password" inputmode="numeric" maxlength="32" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="rdSnapshot rdEntryError" autofocus><button id="rdEntryShow" type="button" aria-pressed="false">顯示</button></div>
+  <p id="rdEntryError" role="alert"></p>
+  <button id="diagnosticsEntry" type="button">連線診斷（免碼）</button>
+  <div class="rd-entry-actions"><button id="rdEntryCancel" type="button">取消</button><button id="rdEntrySubmit" type="submit">進入 RD</button></div>
+ </form>
+</dialog>
+</body></html>

@@ -36,7 +36,7 @@ Never commit broker, router, device-management, or GitHub credentials.
 
 ## Version and assets
 
-Web V06, page title: **INOUT MQTT Dashboard V06 · 2026.09.22 17:19**.
+Web V07, page title: **INOUT MQTT Dashboard V07 · 2026.09.23 11:13**.
 `index.html` opens the versioned page. Keep relative paths and all bundled assets
 together for GitHub Pages project-path hosting under `/INOUT/`.
 
@@ -57,7 +57,11 @@ the displayed pair for that attempt; returning to IO requires entry again.
 This is only an accidental-entry guard, not authentication or an OTP. Public
 counts and older pages remain accessible; no device or broker permission changes.
 Without a previously accepted value, `—` is not treated as zero and RD entry is
-unavailable. Previously accepted stale values are labeled and can be used for
+unavailable for full RD. Use the new no-code Connection Diagnostics button to
+select a device, inspect status/receive counts/errors, disconnect, or reconnect
+using the current applied configuration. Broker/topic/credential settings remain
+hidden and disabled until full RD entry; diagnostics never implicitly unlocks
+full RD when data arrives. Previously accepted stale values are labeled and can be used for
 diagnosis. The code is not stored or sent to MQTT.
 
 MQTT.js 5.10.4 is bundled locally under its MIT license; see
