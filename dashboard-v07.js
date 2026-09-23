@@ -21,7 +21,8 @@
  function remember(){
   try{
    if(!$('remember').checked){localStorage.removeItem(storageKey);return;}
-   localStorage.setItem(storageKey,JSON.stringify({...M.settings({url:$('url').value,topic:$('topic').value,stale:$('stale').value}),id:selected}));
+   const settings=viewMode==='diag'&&connectionConfig?connectionConfig:{url:$('url').value,topic:$('topic').value,stale:$('stale').value};
+   localStorage.setItem(storageKey,JSON.stringify({...M.settings(settings),id:selected}));
   }catch(_){/* Storage may be disabled in private/file mode. Connection remains available. */}
  }
  function sizeNumber(node){
